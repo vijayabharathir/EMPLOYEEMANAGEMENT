@@ -1,0 +1,253 @@
+<div class="container-fluid g-0">
+
+  <nav class="navbar sticky-top navbar-dark bg-dark h-100">
+    <div class="container-fluid">
+        <a class="navbar-brand mx-auto" href="#">Employee Management System</a>
+    </div>
+</nav>
+ 
+ <main class="black-borde">
+
+ 
+  <div class="toolbar">
+
+    <div class="add-employee">
+      <button type="button" class="btn btn-outline-success btn-lg"(click)="add()"  data-bs-toggle="modal"
+        data-bs-target="#exampleModal" #addEmployeeButton>Add Employee</button>
+    </div>
+</div>
+</main>
+</div>
+
+
+<table class="table table-hover mx-auto">
+  <thead >
+      
+    <tr>
+      <th scope="col"  class="text-center">ID</th>
+      <th scope="col" class="text-center">Name</th>
+      <th scope="col" class="text-center">DOB</th>
+      <th scope="col" class="text-center">M/F</th>
+      <th scope="col" class="text-center">Education</th>
+      <th scope="col" class="text-center">Company</th>
+      <th scope="col" class="text-center">Experience
+        (Years)
+      </th>
+      <th scope="col" class="text-center">Salary(LPA)</th>
+      <th scope="col" class="text-center">Address</th>
+      <th scope="col" class="text-center">Phone</th>
+      <th scope="col" class="text-center">Email</th>
+      <th scope="col" class="text-center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of empList">
+      <td  class="text-center">{{employee.id}}</td>
+      <td  >{{employee.firstname}} {{employee.lastname}}</td>
+      
+      <td  class="text-center">{{employee.birthdate}}</td>
+      <td  class="text-center">{{employee.gender}}</td>
+      <td  class="text-center">{{employee.education}}</td>
+      <td  class="text-center">{{employee.company}}</td>
+      <td  class="text-center">{{employee.jobexperience}}</td>
+      <td  class="text-center">{{employee.salary}}</td>
+      <td  >{{employee.street}} {{employee.city}} {{employee.state}}</td>
+     
+      <td  class="text-center">{{employee.phone}}</td>
+      <td >{{employee.email}}</td>
+      <td>
+          <button type="button" class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editEmployee(employee)">Edit</button>
+          <button type="button" class="btn btn-outline-danger" (click)="deleteEmployee(employee)">Delete</button>
+      </td>
+
+    </tr>
+    
+  </tbody>
+</table>
+
+
+
+ <!--add card-->
+  
+ <div #exampleModal class="modal fade" id="exampleModal"  aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Employee Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="resetForm()" ></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="empDetail" >
+
+          <div class="card-header"#tabsContainer>
+           <ul class="nav nav-tabs" id="myTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="employee-tab" data-bs-toggle="tab" href="#employee" role="tab" aria-controls="employee" aria-selected="true">Employee Info</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address Info</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="contacts-tab" data-bs-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="false">Contacts Info</a>
+            </li>
+           </ul>
+          </div>
+
+
+          <div class="card-body">
+          <div class="tab-content" id="myTabsContent">
+          <div class="tab-pane fade show active" id="employee" role="tabpanel" aria-labelledby="employee-tab">
+
+
+
+          <!-- FIRST AND LAST NAME -->
+          <div class="row">
+            <div class="col">
+             <br>
+              <input type="text" class="form-control" placeholder="First Name" formControlName="firstname"[class.is-invalid]="empDetail.controls['firstname'].dirty && empDetail.hasError('required', 'firstname')">
+              <small *ngIf="empDetail.controls['firstname'].dirty && empDetail.hasError('required','firstname')" class="text-danger">*First Name is required*</small>
+              
+            </div></div>
+          <br>
+            <div class="col">
+               <input type="text" class="form-control" placeholder="Last Name" formControlName="lastname"[class.is-invalid]="empDetail.controls['lastname'].dirty && empDetail.hasError('required', 'lastname')">
+              <small *ngIf="empDetail.controls['lastname'].dirty && empDetail.hasError('required','lastname')" class="text-danger">*Last Name is required*</small>
+              
+          </div>
+
+          <!-- PERSONAL INFORMATION -->
+          <div class="row mt-5">
+            <div class="col form-heading">
+              <h6 class="text-secondary fst-italic">Personal Information</h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="datepicker" class="form-label">Birthdate</label>
+              <input type="date" class="form-control" id="datepicker" formControlName="birthdate"[class.is-invalid]="empDetail.controls['birthdate'].dirty && empDetail.hasError('required', 'birthdate')">
+              <small *ngIf="empDetail.controls['birthdate'].dirty && empDetail.hasError('required','birthdate')" class="text-danger">*Birthdate is required*</small>
+            </div>
+
+            <div class="col">
+              <div class="row">
+                <h6 class="text-secondary">Gender</h6>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="form-check form-check-inline">
+                   <input class="form-check-input" type="radio" name="gender" id="male" value="m"
+                      formControlName="gender"[class.is-invalid]="empDetail.controls['gender'].dirty && empDetail.hasError('required', 'gender')">
+                     
+                      <label class="form-check-label" for="male">Male</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="f"
+                      formControlName="gender"[class.is-invalid]="empDetail.controls['gender'].dirty && empDetail.hasError('required', 'gender')">
+                     <label class="form-check-label" for="female">Female</label>
+                    
+                  </div>
+                </div>
+                <small *ngIf="empDetail.controls['gender'].dirty && empDetail.hasError('required','gender')" class="text-danger">*Gender is required*</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <select class="form-select" formControlName="education"[class.is-invalid]="empDetail.controls['education'].dirty && empDetail.hasError('required', 'education')" >
+                <option value=""disabled selected>Select your Education</option>
+                <option *ngFor="let option of educationOptions" [value]="option">
+                  {{option }}
+                </option>
+              </select>
+            </div> <small *ngIf="empDetail.controls['education'].dirty && empDetail.hasError('required','education')" class="text-danger">*Education is required*</small>
+          </div>
+
+   <!-- JOB INFORMATION -->
+          <div class="row mt-5">
+            <div class="col form-heading">
+              <h6 class="text-secondary fst-italic">Job Information</h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+               <input type="text" class="form-control" placeholder="Company Name" formControlName="company"[class.is-invalid]="empDetail.controls['company'].dirty && empDetail.hasError('required', 'company')">
+              <small *ngIf="empDetail.controls['company'].dirty && empDetail.hasError('required','company')" class="text-danger">*Company Name is required*</small>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <input type="number" class="form-control" placeholder="Job Experience (yrs)"
+                formControlName="jobexperience"[class.is-invalid]="empDetail.controls['jobexperience'].dirty && empDetail.hasError('required', 'jobexperience')">
+                <small *ngIf="empDetail.controls['jobexperience'].dirty && empDetail.hasError('required','jobexperience')" class="text-danger">*Experience is required*</small>
+              </div>
+            <div class="col">
+              <input type="number" class="form-control" placeholder="Salary (LPA)" formControlName="salary"[class.is-invalid]="empDetail.controls['salary'].dirty && empDetail.hasError('required', 'salary')">
+              <small *ngIf="empDetail.controls['salary'].dirty && empDetail.hasError('required','salary')" class="text-danger">*salary is required*</small>
+            </div>
+          </div>
+      </div>
+
+          <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+            
+              <div class="mb-3">
+                <label for="street" class="form-label">Street</label>
+                 <input type="text" class="form-control" id="street" formControlName="street" [class.is-invalid]="empDetail.controls['street'].dirty && empDetail.hasError('required', 'street')">
+                <small *ngIf="empDetail.controls['street'].dirty && empDetail.hasError('required','street')" class="text-danger">*street is required*</small>
+              
+              </div>
+              <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                 <input type="text" class="form-control" id="city" formControlName="city" [class.is-invalid]="empDetail.controls['city'].dirty && empDetail.hasError('required', 'city')">
+                <small *ngIf="empDetail.controls['city'].dirty && empDetail.hasError('required','city')" class="text-danger">*city is required*</small>
+              
+              </div>
+              <div class="mb-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" class="form-control" id="state" formControlName="state"[class.is-invalid]="empDetail.controls['state'].dirty && empDetail.hasError('required', 'state')">
+                <small *ngIf="empDetail.controls['state'].dirty && empDetail.hasError('required','state')" class="text-danger">*state is required*</small>
+              
+              </div>
+            
+          </div>
+
+          <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+                 <input type="tel" class="form-control" id="phone" formControlName="phone"[class.is-invalid]="empDetail.controls['phone'].dirty && empDetail.hasError('required', 'phone')">
+              <small *ngIf="empDetail.controls['phone'].dirty && empDetail.hasError('required','phone')" class="text-danger">*phone is required*</small>
+              <small *ngIf="empDetail.controls['phone'].dirty && empDetail.hasError('minlength','phone')" class="text-danger">*Phone must be at least 10 characters*</small>
+              <small *ngIf="empDetail.controls['phone'].dirty && empDetail.hasError('maxlength','phone')" class="text-danger">*Phone cannot be more than the maximum length*</small>
+          
+            
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              
+              <input type="email" class="form-control" id="email" formControlName="email"[class.is-invalid]="empDetail.controls['email'].dirty && empDetail.hasError('required', 'email')">
+              <small *ngIf="empDetail.controls['email'].dirty && empDetail.hasError('required','email')" class="text-danger">*Email is required*</small>
+              <small *ngIf="empDetail.controls['email'].dirty && empDetail.hasError('email','email')" class="text-danger">*Email is invalid*</small>
+           
+            </div>
+          </div>
+
+          </div> </div><br>
+       
+      <div class="modal-footer">
+        <button *ngIf="showinsert" type="button" class="btn btn-primary" (click)="addEmployee()">Insert</button>
+        <button *ngIf="showupdate" type="button" class="btn btn-primary" data-bs-dismiss="modal"  (click)="updateEmployee()">Update</button>
+      </div>
+  </form>
+</div></div>
+    </div>
+ 
+
+
+
+  
